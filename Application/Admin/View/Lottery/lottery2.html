@@ -1,0 +1,138 @@
+<include file="Common:header"/>
+  
+  <body>
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="javascript:;">彩票管理</a>
+        <a>
+          <cite>投注管理</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace('/Admin/lottery/lottery2');" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so mform"  action="" method="GET" style="width:initial;display: inline-block;">
+          <input class="layui-input"  autocomplete="off" placeholder="投注期号" name="date_no" value="{$date_no}">
+          <input class="layui-input"  autocomplete="off" placeholder="会员ID"  name="uid" value="{$uid}">
+          <input class="layui-input"  autocomplete="off" placeholder="投注时间" id="tz_time"  name="tz_time" value="{$tz_time}">
+          <button class="layui-btn search" type="submit" title="搜索" lay-submit lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+        <div style="float:right;">
+            {$page}
+        </div>
+      </div>
+     
+      <table class="layui-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>用户ID</th>
+              <th>期号</th>
+              <th>开奖号码</th>
+              <th>投注信息 [玩法 | 投注点数 | 投注金额 |赔率 ]</th>
+              <th>投注时间</th>
+              <th width="70px">投注总金额</th>
+              <th width="70px">赢钱</th>
+            </tr> 
+          </thead>
+          <tbody>
+            <volist name="list" id="vo">
+            <tr>
+              <td>{$vo.id}</td>
+              <td><a title="查看" class="viewid" data-val="{$vo.uid}" href="javascript:;" style="color: #009688">#{$vo.uid}</a></td>
+              <td>{$vo.date_no}</td>
+              <td>{$vo.kj_num}</td>
+              <td>
+                <div class="info-wrap" style="height:41px;overflow:hidden;">
+                  <table class="layui-table" style="margin:initial;">
+                    <colgroup>
+                      <col width="68">
+                      <col width="60">
+                      <col width="72">
+                      <col width="62">
+                      <col>
+                    </colgroup>
+                    <tbody>
+                        <volist name="vo.info" id="vo2">
+                          <tr>
+                            <td>{$vo2.wf}</td>
+                            <td>{$vo2.val}</td>
+                            <td>{$vo2.money}</td>
+                            <td>{$vo2.pl}</td>
+                          </tr>
+                        </volist>
+                    </tbody>
+                  </table>
+                  </div>
+                  <php>if(count($vo['info'])>1){echo '<div style="text-align: center;"><a class="view-more" href="javascript:;" style="color: #009688;">查看全部<i class="layui-icon layui-icon-down"></i></a></div>';}</php>
+              </td>
+              <td>{$vo.tz_time}</td>
+              <td>{$vo.total_money}</td>
+              <td>{$vo.win_money}</td>
+            </tr>
+            </volist>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="6"><span class="layui-badge layui-bg-orange">小计</span></td>
+              <td style="color:#FFB800;">{$xj_tz_total}</td>
+              <td style="color:#FFB800;">{$xj_win_total}</td>
+            </tr>
+            <tr>
+              <td colspan="6"><span class="layui-badge">总计</span></td>
+              <td class="zj_tz" style="color:#FF5722;">计算中...</td>
+              <td class="zj_win" style="color:#FF5722;">计算中...</td>
+            </tr>
+            </tfoot>
+        </table>
+      </div>
+      <script>
+        layui.use('laydate', function(){
+          var laydate = layui.laydate;
+          
+          //执行一个laydate实例
+          laydate.render({
+            elem: '#tz_time' //指定元素
+          });
+        });
+        $(function(){
+          $('.edit.enable').click(function(){
+            var id = $(this).closest('tr').children('td').eq(0).text();
+            //prompt层
+            layer.prompt({title: '请输入自定义开奖号', formType: 3}, function(text, index){
+              layer.load();
+              if(text.length!=3){
+                layer.msg('您输入的号码格式有误', function(){});
+              }else{
+                $.post('edit_kj_num',{"id":id,"kj_num":text},function(data){
+                  layer.msg(data);
+                  window.location.reload();
+                })
+              }
+              
+            });
+          })
+          $('.view-more').click(function(){
+            if($(this).hasClass('down')){
+              $(this).closest('td').find('.info-wrap').css("height",'41px');
+              $(this).removeClass('down');
+              $(this).html('<a class="view-more" href="javascript:;" style="color: #009688;">查看全部<i class="layui-icon layui-icon-down"></i></a>');
+            }else{
+              $(this).closest('td').find('.info-wrap').css("height",'initial');
+              $(this).addClass('down');
+              $(this).html('<a class="view-more" href="javascript:;" style="color: #009688;">收起<i class="layui-icon layui-icon-up"></i></a>');
+            }
+            
+          })
+          //获取总计
+          $.post('/Admin/lottery/get_tz_zj',$('.mform').serialize(),function(data){
+            data = JSON.parse(data);
+            $('.zj_tz').text(data['zj_tz_total']);
+            $('.zj_win').text(data['zj_win_total']);
+          })
+        })
+      </script>
+    </body>
+  
+  </html>

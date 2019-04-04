@@ -1,0 +1,51 @@
+<include file="Common:header"/>
+<body>
+<form class="layui-form mform" action="" method="POST" style="padding:10px 20px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" readonly autocomplete="off" class="layui-input" value="{$info.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">用户名</label>
+          <div class="layui-input-block">
+            <input type="text" name="username" autocomplete="off" class="layui-input" value="{$info.username}">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">用户密码</label>
+          <div class="layui-input-block">
+            <input type="password" name="password" placeholder="若空则不做修改" autocomplete="off" class="layui-input" value="">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">昵称</label>
+          <div class="layui-input-block">
+            <input type="text" name="nickname" autocomplete="off" class="layui-input" value="{$info.nickname}">
+          </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">账户余额</label>
+            <div class="layui-input-block">
+                <input type="number" name="balance" autocomplete="off" class="layui-input" value="{$info.balance}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">用户类型</label>
+          <div class="layui-input-block">
+            <input type="radio" name="usertype" value="1" title="普通用户" {$info['usertype']==1?checked:''}>
+            <input type="radio" name="usertype" value="0" title="管理员" {$info['usertype']==0?checked:''}>
+          </div>
+        </div>
+      </form>
+      <div class="layui-form-item" style="text-align:center;">
+            <button class="paysub layui-btn">保存</button>
+    </div>
+</body>
+<script>
+$(function(){
+
+})
+</script>
+</html>

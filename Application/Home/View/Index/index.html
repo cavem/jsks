@@ -1,0 +1,62 @@
+<include file="Common:header"/>
+<style>
+  body,html{background: #fff;}
+</style>
+<body>
+
+<div class="exBaner">
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <a href="javascript:;"><img src="__PUBLIC__/images/ban1.jpg" alt=""></a>
+      </div>
+      <!-- <div class="swiper-slide">
+        <a href="javascript:;"><img src="__PUBLIC__/images/ban2.jpeg" alt=""></a>
+      </div>
+      <div class="swiper-slide">
+        <a href="javascript:;"><img src="__PUBLIC__/images/ban3.jpeg" alt=""></a>
+      </div>
+    </div>
+    <div class="swiper-pagination"></div> -->
+  </div>
+</div>
+
+<div class="exNu flex">
+  <div class="exNu1">
+    <ul>
+      <li>成交额&nbsp;<span><php>echo rand(895621489,956321584);</php>元</span></li>
+      <li>关注人数&nbsp;<span><php>echo rand(25314869,27412368);</php>人</span></li>
+    </ul>
+  </div>
+  <div class="exNu2">
+    <p><span><php>echo mt_rand(90,98);</php></span>%</p>
+    <p>赚钱率</p>
+  </div>
+</div>
+
+<div class="exIm">
+  <ul class="flex">
+    <li><a href="{:U('fangjian')}"><img src="__PUBLIC__/images/img1.jpg" alt=""></a></li>
+    <li><a href="javascript:;" onclick="layer.msg('对不起，您没有开通此区域账户')"><img src="__PUBLIC__/images/img2.jpg" alt=""></a></li>
+    <li><a href="javascript:;" onclick="layer.msg('对不起，您没有开通此区域账户')"><img src="__PUBLIC__/images/img3.jpg" alt=""></a></li>
+    <li><a href="javascript:;" onclick="layer.msg('对不起，您没有开通此区域账户')"><img src="__PUBLIC__/images/img4.jpg" alt=""></a></li>
+  </ul>
+</div>
+
+
+
+<script>
+  var swiper = new Swiper('.swiper-container', {
+    loop:true,
+    autoplay:true,
+    pagination: {
+      el: '.swiper-pagination',
+      dynamicBullets: true,
+    },
+  });
+</script>
+
+
+
+</body>
+</html>

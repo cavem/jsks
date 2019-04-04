@@ -1,0 +1,22 @@
+<include file="Common:header"/>
+<body>
+<div class="fj">
+  <ul>
+    <li><a {$isopen==1?'href="/Game/index"':'href="javascript:;" class="notopen"'}><img src="__PUBLIC__/images/a1.png" alt=""></a></li>
+    <li><a href="javascript:;" {$isopen==1?'class="unable"':'class="notopen"'}><img src="__PUBLIC__/images/a2.png" alt=""></a></li>
+    <li><a href="javascript:;" {$isopen==1?'class="unable"':'class="notopen"'}><img src="__PUBLIC__/images/a3.png" alt=""></a></li>
+    <li><a href="javascript:;" {$isopen==1?'class="unable"':'class="notopen"'}><img src="__PUBLIC__/images/a4.png" alt=""></a></li>
+  </ul>
+</div>
+<script>
+$(function(){
+  $('.unable').click(function(){
+    layer.msg('积分不足')
+  })
+  $('.notopen').click(function(){
+    layer.msg('亚洲区已封盘')
+  })
+})
+</script>
+</body>
+</html>

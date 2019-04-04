@@ -1,0 +1,100 @@
+<include file="Common:header"/>
+<style>
+.layui-form-select{display: inline-block;}
+</style>
+  <body>
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="javascript:;">会员管理</a>
+        <a>
+          <cite>提现管理</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so"   action="" method="GET" style="width:initial;display: inline-block;" >
+          <input class="layui-input"  autocomplete="off" placeholder="用户ID"  id="uid" name="uid">
+          <input class="layui-input"  autocomplete="off" placeholder="提现时间"  id="tx_time" name="tx_time">
+          <select name="state">
+              <option value=""></option>
+              <option value="审核中">审核中</option>
+              <option value="已确认">已确认</option>
+          </select>
+          <input class="layui-input"  autocomplete="off" placeholder="确认时间"  id="qr_time" name="qr_time">
+          <button class="layui-btn search" title="搜索" lay-submit lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+      </div>
+      <div style="float:right;">
+          {$page}
+        </div>
+      </div>
+      
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>用户ID</th>
+            <th>姓名</th>
+            <th>提现卡号</th>
+            <th>提现金额</th>
+            <th>提现时间</th>
+            <th>提现状态</th>
+            <th>确认时间</th>
+            <th>操作</th>
+          </tr> 
+        </thead>
+        <tbody>
+          <volist name="list" id="vo">
+          <tr>
+            <td>{$vo.id}</td>
+            <td><a title="查看" class="viewid" data-val="{$vo.uid}" href="javascript:;" style="color: #009688">#{$vo.uid}</a></td>
+            <td>{$vo.truename}</td>
+            <td>{$vo.cardnum}</td>
+            <td>{$vo.money}</td>
+            <td>{$vo.tx_time}</td>
+            <td>{$vo['state']=="审核中"?'<span class="layui-badge">审核中</span>':'<span class="layui-badge layui-bg-black">已确认</span>'}</td>
+            <td>{$vo.qr_time}</td>
+            <td style="width:120px;">  
+              <button class="qr layui-btn layui-btn-xs {$vo['state']=='审核中'?'enable':'layui-btn-disabled'}" title="确认">
+                <i class="layui-icon">确认</i>
+              </button>
+            </td>
+          </tr>
+          </volist>
+        </tbody>
+      </table>
+    </div>
+    <script>
+      layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#tx_time' //指定元素
+        });
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#qr_time' //指定元素
+        });
+      });
+      $(function(){
+        $('.qr.enable').click(function(){
+          layer.load()
+          var id = $(this).closest('tr').children('td').eq(0).text();
+          $.post('qrtx',{"id":id},function(data){
+            if(data==0){
+              layer.closeAll();
+              layer.msg("操作成功");
+              window.location.reload();
+            }else{
+              layer.msg("操作失败");
+            }
+          })
+        })
+      })
+    </script>
+  </body>
+
+</html>

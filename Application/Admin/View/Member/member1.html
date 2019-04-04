@@ -1,0 +1,116 @@
+<include file="Common:header"/>
+<style>
+@media screen and (min-width: 992px){
+.layui-col-md12 {
+    width: initial;
+    display: inline-block;
+}
+}
+</style>
+  <body>
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="javascript:;">会员管理</a>
+        <a>
+          <cite>会员管理</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so"  action="" method="GET" style="width:initial;">
+          <input class="layui-input"  autocomplete="off" placeholder="ID"  id="id" name="id">
+          <input class="layui-input"  autocomplete="off" placeholder="用户名" id="nickname"  name="username">
+          <input class="layui-input" autocomplete="off" placeholder="开始时间" id="reg_time"  name="reg_time">
+          <button class="layui-btn search" title="搜索" lay-submit lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+      </div>
+      <div style="float:right;">
+          {$page}
+        </div>
+      </div>
+      
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>用户名</th>
+            <th>昵称</th>
+            <th>余额</th>
+            <th>注册时间</th>
+            <th>操作</th>
+          </tr> 
+        </thead>
+        <tbody>
+          <volist name="list" id="vo">
+          <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.username}</td>
+            <td>{$vo.nickname}</td>
+            <td>{$vo.balance}</td>
+            <td>{$vo.reg_time}</td>
+            <td style="width:180px;">  
+              <button class="view layui-btn layui-btn-xs" title="查看">
+                <i class="layui-icon">查看</i>
+              </button>
+              <button class="pay layui-btn layui-btn-xs" title="充值">
+                <i class="layui-icon">充值</i>
+              </button>
+              <button class="edit layui-btn layui-btn-xs" title="编辑">
+                  <i class="layui-icon">编辑</i>
+                </button>
+            </td>
+          </tr>
+          </volist>
+        </tbody>
+      </table>
+    </div>
+    <script>
+      layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#reg_time' //指定元素
+        });
+      });
+      $(function(){
+        $('.view').click(function(){
+          var id = $(this).closest('tr').children('td').eq(0).text();
+          layer.open({
+            type: 2 //此处以iframe举例
+            ,title: '查看'
+            ,area: ['900px', '500px']
+            ,shade: .3
+            ,maxmin: true
+            ,content: "{:U('Member/member1_view')}?id="+id
+          });
+        })
+        $('.pay').click(function(){
+          var id = $(this).closest('tr').children('td').eq(0).text();
+          layer.open({
+            type: 2 //此处以iframe举例
+            ,title: '充值'
+            ,area: ['900px', '500px']
+            ,shade: .3
+            ,maxmin: true
+            ,content: "{:U('Member/member1_pay')}?id="+id
+          });
+        })
+        $('.edit').click(function(){
+          var id = $(this).closest('tr').children('td').eq(0).text();
+          layer.open({
+            type: 2 //此处以iframe举例
+            ,title: '编辑'
+            ,area: ['900px', '500px']
+            ,shade: .3
+            ,maxmin: true
+            ,content: "{:U('Member/member1_edit')}?id="+id
+          });
+        })
+      })
+    </script>
+  </body>
+
+</html>

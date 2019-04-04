@@ -1,0 +1,162 @@
+<include file="Common:header"/>
+<style>
+  body,html{background: #fff;}
+</style>
+<body>
+    <include file="Common:nav"/>
+<div class="index">
+
+  <div class="thF thXf">
+    <div class="thFa thXfa flex">
+      <div class="thFa1">
+        <p>会员昵称</p>
+      </div>
+      <div class="thFa2">
+        <p>{$Think.session.loginuser.nickname}</p>
+      </div>
+    </div>
+    <div class="thFa thXfa flex">
+      <div class="thFa1">
+        <p>目前金额</p>
+      </div>
+      <div class="thFa2">
+        <p>{$balance}</p>
+        <input type="hidden" class="balance" value="{$balance}">
+      </div>
+    </div>
+    <form class="mform">
+    <div class="thFa flex">
+      <div class="thFa1">
+        <p>出金额度</p>
+      </div>
+      <div class="thFa2">
+        <input type="number" name="money" id="thFA1-a1" placeholder="请输入出仓金额">
+      </div>
+    </div>
+    <div class="thFa flex">
+      <div class="thFa1">
+        <p>银行卡号</p>
+      </div>
+      <div class="thFa2">
+        <input type="number" name="cardnum" id="thFA1-a2" placeholder="请输入银行卡号">
+      </div>
+    </div>
+    <div class="thFa flex">
+      <div class="thFa1">
+        <p>开户行</p>
+      </div>
+      <div class="thFa2">
+        <input type="text" name="bank_name" id="thFA1-a3" placeholder="请输入开户行">
+      </div>
+    </div>
+    <div class="thFa flex">
+      <div class="thFa1">
+        <p>开户网点</p>
+      </div>
+      <div class="thFa2">
+        <input type="text" name="bank_netdot" id="thFA1-a4" placeholder="请输入开户网点">
+      </div>
+    </div>
+    <div class="thFa flex">
+      <div class="thFa1">
+        <p>姓名</p>
+      </div>
+      <div class="thFa2">
+        <input type="text" name="truename" id="thFA1-a5"  placeholder="请输入姓名">
+      </div>
+    </div>
+    </form>
+    <div class="thFBut">
+      <button type="button" id="thABut">提交</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var wsurl = "ws://39.107.68.39:8888/jsks/server.php";
+  websocket = new WebSocket(wsurl);
+  function send(type, name, head, message) {
+      var type = type;
+      var name = name;
+      var head = head;
+      var message = message;
+      var msg = {
+          type: type,
+          message: message,
+          name: name,
+          head: head
+      };
+      try {
+          websocket.send(JSON.stringify(msg))
+      } catch (ex) {
+          console.log(ex)
+      }
+  }
+  if (window.WebSocket) {
+        websocket.onopen = function(evevt) {
+            console.log("Connected to WebSocket server.")
+        };
+        websocket.onerror = function(event) {
+            console.log("Connected to WebSocket server error")
+        };
+        websocket.onclose = function(event) {
+            console.log("websocket Connection Closed. ")
+        }
+    } else {
+        alert("该浏览器不支持web socket")
+    }
+  $(document).ready(function () {
+    var win=$(window).height();
+    $('.index').css('height',win)
+  })
+  $(function () {
+    // 点击提交
+    $('#thABut').click(function () {
+      var x1=$('#thFA1-a1').val();
+      var x2=$('#thFA1-a2').val();
+      var x3=$('#thFA1-a3').val();
+      var x4=$('#thFA1-a4').val();
+      var x5=$('#thFA1-a5').val();
+      if(x1==''){
+        layer.msg('请输入出仓金额');
+      }else if($('.balance').val()<x1){
+        layer.msg('出仓金额不能大于余额');
+      }else if(x2==''){
+        layer.msg('请输入银行卡号');
+      }else if(x3==''){
+        layer.msg('请输入开户行');
+      }else if(x4==''){
+        layer.msg('请输入开户网点');
+      }else if(x5==''){
+        layer.msg('请输入姓名');
+      }else{
+        layer.load();
+        $.ajax({
+          url:'',
+          data:$('.mform').serialize(),
+          type:"POST",
+          dataType:"json",
+          success:function (data) {
+            layer.closeAll();
+            if(data==0){
+              send("system", "提现", "", "提现");
+              layer.msg("提交成功");
+              window.location.reload();
+            }else if(data==1){
+              layer.msg("提交失败");
+            }else{
+              layer.msgt(data);
+            }
+          }
+        })
+      }
+    })
+  })
+</script>
+
+
+
+
+</body>
+</html>

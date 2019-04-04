@@ -1,0 +1,84 @@
+<include file="Common:header"/>
+<link rel="stylesheet" href="__PUBLIC__/admin/css/xadmin.css">
+<link rel="stylesheet" href="__PUBLIC__/lib/css/pagination.css">
+<style>
+  body,html{background: #fff;}
+</style>
+<body>
+<div class="re">
+  <div class="resTi">
+    <div class="res-tit">
+      <ul class="flex">
+        <li><a href="javascript:history.go(-1);"></a></li>
+        <li>建仓记录</li>
+        <li></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div style="overflow: scroll;">  
+  <table class="layui-table" style="width:600px;">
+    <thead>
+        <tr>
+        <th>期号|投注时间</th>
+        <th>建仓信息</th>
+        <th>建仓总金额</th>
+        <th>盈利</th>
+        </tr> 
+    </thead>
+    <tbody>
+        <volist name="list" id="vo">
+        <tr>
+        <td>{$vo.date_no}<br>{$vo.tz_time}</td>
+        <td>
+            <div class="info-wrap">
+            <table class="layui-table" style="margin:initial;">
+                <tbody>
+                    <volist name="vo.info" id="vo2">
+                    <tr>
+                        <td>{$vo2.wf}</td>
+                        <td>{$vo2.val}</td>
+                        <td>{$vo2.money}</td>
+                        <td>{$vo2.pl}</td>
+                    </tr>
+                    </volist>
+                </tbody>
+            </table>
+            </div>
+            
+        </td>
+        <td>{$vo.total_money}</td>
+        <td>{$vo.win_money}</td>
+        </tr>
+        </volist>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2"><span class="layui-badge layui-bg-orange">小计</span></td>
+        <td style="color:#FFB800;">{$xj_tz_total}</td>
+        <td style="color:#FFB800;">{$xj_win_total}</td>
+      </tr>
+      <tr>
+        <td colspan="2"><span class="layui-badge">总计</span></td>
+        <td class="zj_tz" style="color:#FF5722;">计算中...</td>
+        <td class="zj_win" style="color:#FF5722;">计算中...</td>
+      </tr>
+    </tfoot>
+    </table>
+
+</div>
+{$page}
+<script>
+var uid = "{$Think.session.loginuser.id}";
+$(function(){
+  //获取总计
+  $.post('/Admin/lottery/get_tz_zj',{"uid":uid},function(data){
+    data = JSON.parse(data);
+    $('.zj_tz').text(data['zj_tz_total']);
+    $('.zj_win').text(data['zj_win_total']);
+  })
+})
+</script>
+
+</body>
+</html>

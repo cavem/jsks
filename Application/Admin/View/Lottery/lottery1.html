@@ -1,0 +1,141 @@
+<include file="Common:header"/>
+  
+  <body>
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="javascript:;">彩票管理</a>
+        <a>
+          <cite>开奖管理</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so" action="" method="GET" style="width:initial;">
+          <input class="layui-input"  autocomplete="off" placeholder="开奖期号"  id="date" name="date_no">
+          <input class="layui-input"  autocomplete="off" placeholder="开奖号码" id="number"  name="kj_num">
+          <input class="layui-input" id="start_time" autocomplete="off" placeholder="开始时间" id="number"  name="start_time">
+          <button class="layui-btn search" type="submit"  lay-submit lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+        <div style="float:right;">
+          {$page}
+        </div>
+      </div>
+      
+      <table class="layui-table">
+        <colgroup>
+          <col width="150">
+          <col width="200">
+          <col>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>期号</th>
+            <th>开奖号码</th>
+            <th>开始时间</th>
+            <th>开奖时间</th>
+            <th>结束时间</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr> 
+        </thead>
+        <tbody>
+          <volist name="list" id="vo">
+          <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.date_no}</td>
+            <td>{$vo.kj_num}</td>
+            <td>{$vo.start_time}</td>
+            <td>{$vo['kj_time']==''?'<span class="mas"><span id="minute_show">00</span>:<span id="second_show">00</span></span>':$vo['kj_time']}</td>
+            <td>{$vo.end_time}</td>
+            <td>{$vo['state']=='投注中'?'<span class="layui-badge">投注中</span>':($vo['$state']=='开奖中'?'<span class="layui-badge layui-bg-orange">开奖中</span>':'<span class="layui-badge layui-bg-black">已封盘</span>')}</td>
+            <td>  
+              <button class="edit layui-btn layui-btn-sm {$vo['state']=='投注中'?'enable':'layui-btn-disabled'}" title="{$vo['state']=='投注中'?'修改开奖号码':''}">
+                <i class="layui-icon">&#xe642;</i>
+              </button>
+            </td>
+          </tr>
+          </volist>
+        </tbody>
+      </table>
+    </div>
+    <script>
+    // 倒计时
+    function timer(intDiff){
+      if(intDiff=='f'){return false;}
+      setInterval(function(){
+          var day=0,
+            hour=0,
+            minute=0,
+            second=0;//时间默认值
+          if(intDiff > 0){
+            day = Math.floor(intDiff / (60 * 60 * 24));
+            hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+            minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+            second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+            if (minute <= 9) minute = '0' + minute;
+            if (second <= 9) second = '0' + second;
+            $('#day_show').html(day+"天");
+            $('#hour_show').html('<s id="h"></s>'+hour);
+            $('#minute_show').html('<s></s>'+minute);
+            $('#second_show').html('<s></s>'+second);
+          }
+          
+          if(intDiff==0){
+            window.location.reload();
+            clearInterval(timer)
+          }
+          intDiff--;
+        }, 1000);
+      }
+      //获取剩余时间
+      var gettimer = function(){
+        $.post('/Admin/Lottery/gettimer',{"n":"n"},function(data){
+          data=JSON.parse(data);
+          if(data['state']=="投注中"){
+            num=data['timer'];
+          }else if(data['state']=="开奖中"){
+            num=0;
+          }else{
+            num='f';
+          }
+          timer(num);
+        })
+      }
+      layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#start_time' //指定元素
+        });
+      });
+      $(function(){
+        gettimer();
+        $('.edit.enable').click(function(){
+          var id = $(this).closest('tr').children('td').eq(0).text();
+          var date_no = $(this).closest('tr').children('td').eq(1).text();
+          //prompt层
+          layer.prompt({title: '请输入自定义开奖号', formType: 3}, function(text, index){
+            var n1=text.charAt(0);
+            var n2=text.charAt(1);
+            var n3=text.charAt(2);
+            if(text.length!=3||n1==0||n2==0||n3==0||n1>6||n2>6||n3>6){
+              layer.msg('您输入的号码格式有误', function(){});
+            }else{
+              layer.load();
+              $.post('/Admin/Lottery/edit_kj_num',{"id":id,"kj_num":text,"date_no":date_no},function(data){
+                layer.msg(data);
+                window.location.reload();
+              })
+            }
+            
+          });
+        })
+      })
+    </script>
+  </body>
+
+</html>
