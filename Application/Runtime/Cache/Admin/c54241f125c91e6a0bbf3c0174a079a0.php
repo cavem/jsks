@@ -77,10 +77,11 @@
             <input type="radio" name="usertype" value="0" title="管理员" <?php echo ($info['usertype']==0?checked:''); ?>>
           </div>
         </div>
+        <div class="layui-form-item" style="text-align:center;">
+          <button type="submit" class="paysub layui-btn">保存</button>
+        </div>
       </form>
-      <div class="layui-form-item" style="text-align:center;">
-            <button class="paysub layui-btn">保存</button>
-    </div>
+      
 </body>
 <script>
 $(function(){

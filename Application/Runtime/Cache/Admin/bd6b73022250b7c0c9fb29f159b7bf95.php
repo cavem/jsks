@@ -75,6 +75,7 @@
           <tr>
             <th>ID</th>
             <th>用户ID</th>
+            <th>姓名</th>
             <th>提现卡号</th>
             <th>提现金额</th>
             <th>提现时间</th>
@@ -87,6 +88,7 @@
           <?php if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr>
             <td><?php echo ($vo["id"]); ?></td>
             <td><a title="查看" class="viewid" data-val="<?php echo ($vo["uid"]); ?>" href="javascript:;" style="color: #009688">#<?php echo ($vo["uid"]); ?></a></td>
+            <td><?php echo ($vo["truename"]); ?></td>
             <td><?php echo ($vo["cardnum"]); ?></td>
             <td><?php echo ($vo["money"]); ?></td>
             <td><?php echo ($vo["tx_time"]); ?></td>

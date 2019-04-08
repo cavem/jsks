@@ -29,7 +29,7 @@ $(function(){
     layer.msg('积分不足')
   })
   $('.notopen').click(function(){
-    layer.msg('游戏还未开始，请联系客服查看开奖时间')
+    layer.msg('亚洲区已封盘')
   })
 })
 </script>

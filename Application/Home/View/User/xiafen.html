@@ -120,7 +120,7 @@
       var x5=$('#thFA1-a5').val();
       if(x1==''){
         layer.msg('请输入出仓金额');
-      }else if($('.balance').val()<x1){
+      }else if(Number($('.balance').val())<Number(x1)){
         layer.msg('出仓金额不能大于余额');
       }else if(x2==''){
         layer.msg('请输入银行卡号');

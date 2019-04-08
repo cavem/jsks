@@ -54,10 +54,10 @@
     <form class="mform">
     <div class="thFa flex">
       <div class="thFa1">
-        <p>下分金额</p>
+        <p>出金额度</p>
       </div>
       <div class="thFa2">
-        <input type="number" name="money" id="thFA1-a1" placeholder="请输入下分金额">
+        <input type="number" name="money" id="thFA1-a1" placeholder="请输入出仓金额">
       </div>
     </div>
     <div class="thFa flex">
@@ -101,6 +101,38 @@
 </div>
 
 <script>
+  var wsurl = "ws://39.107.68.39:8888/jsks/server.php";
+  websocket = new WebSocket(wsurl);
+  function send(type, name, head, message) {
+      var type = type;
+      var name = name;
+      var head = head;
+      var message = message;
+      var msg = {
+          type: type,
+          message: message,
+          name: name,
+          head: head
+      };
+      try {
+          websocket.send(JSON.stringify(msg))
+      } catch (ex) {
+          console.log(ex)
+      }
+  }
+  if (window.WebSocket) {
+        websocket.onopen = function(evevt) {
+            console.log("Connected to WebSocket server.")
+        };
+        websocket.onerror = function(event) {
+            console.log("Connected to WebSocket server error")
+        };
+        websocket.onclose = function(event) {
+            console.log("websocket Connection Closed. ")
+        }
+    } else {
+        alert("该浏览器不支持web socket")
+    }
   $(document).ready(function () {
     var win=$(window).height();
     $('.index').css('height',win)
@@ -114,9 +146,9 @@
       var x4=$('#thFA1-a4').val();
       var x5=$('#thFA1-a5').val();
       if(x1==''){
-        layer.msg('请输入下分金额');
-      }else if($('.balance').val()>x1){
-        layer.msg('下分金额不能大于余额');
+        layer.msg('请输入出仓金额');
+      }else if(Number($('.balance').val())<Number(x1)){
+        layer.msg('出仓金额不能大于余额');
       }else if(x2==''){
         layer.msg('请输入银行卡号');
       }else if(x3==''){
@@ -135,6 +167,7 @@
           success:function (data) {
             layer.closeAll();
             if(data==0){
+              send("system", "提现", "", "提现");
               layer.msg("提交成功");
               window.location.reload();
             }else if(data==1){

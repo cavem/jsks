@@ -26,6 +26,7 @@ var mynickname = "<?php echo ($_SESSION['loginuser']['nickname']); ?>";
 var timers = "<?php echo ($timer); ?>";
 var kfqq = "<?php echo ($kfqq); ?>";
 var kfws = "<?php echo ($kfws); ?>";
+var bankcard = "<?php echo ($bankcard); ?>";
 </script>
 
 <body>
@@ -81,10 +82,10 @@ var kfws = "<?php echo ($kfws); ?>";
           <li><a href="<?php echo U('sysinfo');?>">公告</a></li>
           <li><a href="<?php echo U('result');?>">走势</a></li>
           <li><a href="<?php echo U('rule');?>">规则</a></li>
-          <li><a id="Upper" href="javascript:;">加仓</a></li>
+          <li><a id="Upper" href="javascript:;">入金</a></li>
           <li><a href="<?php echo U('User/yinhang');?>">个人</a></li>
           <li><a href="<?php echo U('User/record');?>">建仓</a></li>
-          <li><a href="<?php echo U('User/xiafen');?>">出仓</a></li>
+          <li><a href="<?php echo U('User/xiafen');?>">出金</a></li>
           <li><a style="background: url(/Public/images/menu2.png) no-repeat center;background-size: 100% 100%;" href="<?php echo U('Index/index');?>">首页</a></li>
         </ul>
       </div>
@@ -272,6 +273,7 @@ $(function(){
             if(isWeiXin()){
               layer.alert("请先添加客服微信："+kfws);
             }else{
+              layer.alert("请先添加客服qq："+kfqq);
               window.location.href = "mqqwpa://im/chat?chat_type=wpa&uin=" + kfqq + "&version=1&src_type=web&web_src=oicqzone.com"
             }
         }

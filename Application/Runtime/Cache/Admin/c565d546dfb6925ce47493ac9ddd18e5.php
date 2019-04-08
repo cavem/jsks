@@ -83,6 +83,12 @@
                     <input type="text" name="siteinfo[sysinfo]" autocomplete="off" class="layui-input" value="<?php echo ($siteinfo["sysinfo"]); ?>">
                 </div>
             </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">银行卡号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="siteinfo[bankcard]" autocomplete="off" class="layui-input" value="<?php echo ($siteinfo["bankcard"]); ?>">
+                </div>
+            </div>
           </form>
           <div class="layui-form-item" style="text-align:center;">
                 <button class="save layui-btn">保存</button>

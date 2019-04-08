@@ -414,11 +414,9 @@ $(function() {
             mainContainer.scrollTop(scrollToContainer.offset().top - mainContainer.offset().top + mainContainer.scrollTop())
         }
         websocket.onerror = function(event) {
-            i++;
             console.log("Connected to WebSocket server error")
         };
         websocket.onclose = function(event) {
-            i++;
             console.log("websocket Connection Closed. ")
         }
     } else {
